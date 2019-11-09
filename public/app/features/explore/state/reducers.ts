@@ -662,6 +662,7 @@ const getModesForDatasource = (dataSource: DataSourceApi, currentMode: ExploreMo
   // TODO: need to figure out a better way to handle this situation
   const supportsGraph = dataSource.meta.name === 'Loki' ? false : dataSource.meta.metrics;
   const supportsLogs = dataSource.meta.logs;
+  const supportsTracing = dataSource.meta.tracing;
 
   let mode = currentMode || ExploreMode.Metrics;
   const supportedModes: ExploreMode[] = [];
@@ -672,6 +673,10 @@ const getModesForDatasource = (dataSource: DataSourceApi, currentMode: ExploreMo
 
   if (supportsLogs) {
     supportedModes.push(ExploreMode.Logs);
+  }
+
+  if (supportsTracing) {
+    supportedModes.push(ExploreMode.Tracing);
   }
 
   if (supportedModes.length === 1) {

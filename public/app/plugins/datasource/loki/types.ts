@@ -40,4 +40,5 @@ export type DerivedFieldConfig = {
   matcherRegex: string;
   name: string;
   url?: string;
+  datasourceName?: string;
 };

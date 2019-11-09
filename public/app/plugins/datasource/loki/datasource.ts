@@ -12,6 +12,7 @@ import {
   ArrayVector,
   FieldType,
   FieldConfig,
+  DataLink,
 } from '@grafana/data';
 import { addLabelToSelector } from 'app/plugins/datasource/prometheus/add_label_to_query';
 import LanguageProvider from './language_provider';
@@ -444,13 +445,15 @@ export class LokiDatasource extends DataSourceApi<LokiQuery, LokiOptions> {
       const fields = fromPairs(
         derivedFields.map(field => {
           const config: FieldConfig = {};
-          if (field.url) {
-            config.links = [
-              {
-                url: field.url,
-                title: '',
+          if (field.url || field.datasourceName) {
+            const link: DataLink = {
+              url: field.url,
+              title: '',
+              meta: {
+                datasourceName: field.datasourceName,
               },
-            ];
+            };
+            config.links = [link];
           }
           const dataFrameField = {
             name: field.name,
