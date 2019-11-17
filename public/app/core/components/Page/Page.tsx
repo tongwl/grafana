@@ -30,8 +30,28 @@ class Page extends Component<Props> {
   }
 
   updateTitle = () => {
-    const title = this.getPageTitle;
-    document.title = title ? title + ' - Grafana' : 'Grafana';
+    let title = this.getPageTitle;
+    title =
+      title === 'Alerting: Alert Rules'
+        ? '告警规则'
+        : title === 'Configuration: Data Sources'
+        ? '配置: 数据源'
+        : title === 'Configuration: Users'
+        ? '配置: 用户'
+        : title === 'Configuration: Teams'
+        ? '配置: 团队'
+        : title === 'Configuration: Plugins'
+        ? '配置: 插件'
+        : title === 'Configuration: Preferences'
+        ? '配置: 首选项'
+        : title === 'Configuration: API Keys'
+        ? '配置: API关键字'
+        : title === 'Server Admin: Settings'
+        ? '服务器管理员: 设置'
+        : title === 'Server Admin: Stats'
+        ? '服务器管理员: 统计'
+        : title;
+    document.title = title ? title + ' - 辰栖科技' : '辰栖科技';
   };
 
   get getPageTitle() {

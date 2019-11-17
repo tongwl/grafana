@@ -35,17 +35,31 @@ export interface StateProps {
 
 type Props = StateProps & OwnProps;
 
-export class DashNav extends PureComponent<Props> {
+interface State {
+  settingsEnabled: boolean;
+}
+
+export class DashNav extends PureComponent<Props, State> {
   timePickerEl: HTMLElement;
   timepickerCmp: AngularComponent;
   playlistSrv: PlaylistSrv;
+  serverRequest: any;
 
   constructor(props: Props) {
     super(props);
     this.playlistSrv = this.props.$injector.get('playlistSrv');
+    this.state = {
+      settingsEnabled: false,
+    };
   }
 
   componentDidMount() {
+    this.serverRequest = $.get('public/setting.json?v=' + Math.random(), result => {
+      this.setState({
+        settingsEnabled: result.showSettings,
+      });
+    });
+
     const loader = getAngularLoader();
     const template =
       '<gf-time-picker class="gf-timepicker-nav" dashboard="dashboard" ng-if="!dashboard.timepicker.hidden" />';
@@ -55,6 +69,7 @@ export class DashNav extends PureComponent<Props> {
   }
 
   componentWillUnmount() {
+    this.serverRequest.abort();
     if (this.timepickerCmp) {
       this.timepickerCmp.destroy();
     }
@@ -191,6 +206,7 @@ export class DashNav extends PureComponent<Props> {
     const { canStar, canSave, canShare, showSettings, isStarred } = dashboard.meta;
     const { snapshot } = dashboard;
     const snapshotUrl = snapshot && snapshot.originalUrl;
+    const { settingsEnabled } = this.state;
     return (
       <div className="navbar">
         {this.isInFullscreenOrSettings && this.renderBackButton()}
@@ -260,7 +276,7 @@ export class DashNav extends PureComponent<Props> {
             />
           )}
 
-          {showSettings && (
+          {showSettings && settingsEnabled && (
             <DashNavButton
               tooltip="Dashboard settings"
               classSuffix="settings"

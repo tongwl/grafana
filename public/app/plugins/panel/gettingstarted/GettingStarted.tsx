@@ -156,7 +156,7 @@ export class GettingStarted extends PureComponent<PanelProps, State> {
             return (
               <div className={step.done ? 'progress-step completed' : 'progress-step active'}>
                 <a className="progress-link" href={step.href} target={step.target} title={step.note}>
-                  <span className="progress-marker" ng-className="step.cssClass">
+                  <span className="progress-marker" ng-classname="step.cssClass">
                     <i className={step.icon} />
                   </span>
                   <span className="progress-text">{step.title}</span>

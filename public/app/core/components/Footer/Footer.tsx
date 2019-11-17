@@ -14,7 +14,8 @@ export const Footer: FC<Props> = React.memo(
     return (
       <footer className="footer">
         <div className="text-center">
-          <ul>
+          辰栖科技
+          <ul className="display-none">
             <li>
               <a href="http://docs.grafana.org" target="_blank">
                 <i className="fa fa-file-code-o" /> Docs

@@ -107,7 +107,9 @@ export class DashboardPage extends PureComponent<Props, State> {
 
     // if we just got dashboard update title
     if (!prevProps.dashboard) {
-      document.title = dashboard.title + ' - Grafana';
+      dashboard.title =
+        dashboard.title === 'New dashboard' ? '创建面板' : dashboard.title === 'Home' ? '主页' : dashboard.title;
+      document.title = dashboard.title ? dashboard.title + ' - 辰栖科技' : '辰栖科技';
     }
 
     // Due to the angular -> react url bridge we can ge an update here with new uid before the container unmounts
