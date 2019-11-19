@@ -54,10 +54,15 @@ export class DashNav extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.serverRequest = $.get('public/setting.json?v=' + Math.random(), result => {
-      this.setState({
-        settingsEnabled: result.showSettings,
-      });
+    this.serverRequest = $.ajax({
+      type: 'GET',
+      dataType: 'json',
+      url: 'public/setting.json?v=' + Math.random(),
+      success: (result: any) => {
+        this.setState({
+          settingsEnabled: result.showSettings,
+        });
+      },
     });
 
     const loader = getAngularLoader();

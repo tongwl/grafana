@@ -8,6 +8,7 @@ const TopSection: FC<any> = () => {
   let showCreate = false;
   $.ajax({
     type: 'GET',
+    dataType: 'json',
     url: 'public/setting.json?v=' + Math.random(),
     async: false,
     success: (result: any) => {
