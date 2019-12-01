@@ -104,6 +104,11 @@ func (hs *HTTPServer) registerRoutes() {
 	r.Get("/dashboard/snapshot/*", hs.Index)
 	r.Get("/dashboard/snapshots/", reqSignedIn, hs.Index)
 
+	// try license
+	r.Get("/license/information", Wrap(GetLicenseInfo))
+	r.Get("/license/informationverbose", Wrap(GetLicenseInfoVerbose))
+	r.Post("/license/information", bind(dtos.LicenseInput{}), Wrap(SetLicenseInfo))
+
 	// api for dashboard snapshots
 	r.Post("/api/snapshots/", bind(m.CreateDashboardSnapshotCommand{}), CreateDashboardSnapshot)
 	r.Get("/api/snapshot/shared-options/", GetSharingOptions)
