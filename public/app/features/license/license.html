@@ -1,0 +1,52 @@
+<page-header model="ctrl.navModel"></page-header>
+
+<div class="page-container page-body license-page-container">
+  <div class="alert-container" ng-if="ctrl.isLegalLicenseInfo.showAlert">
+    <i class="fa fa-exclamation-circle"></i>{{ctrl.isLegalLicenseInfo.alertMessage}}
+  </div>
+
+  <form name="licenseForm" class="gf-form-group license-form" ng-if="!ctrl.isLoading && !ctrl.isLegalLicenseInfo.loadLicenseFail && !ctrl.isLegalLicenseInfo.parseLicenseFail && !ctrl.isLegalLicenseInfo.serverAPIError">
+    <div class="gf-form">
+      <span class="gf-form-label width-10">单位</span>
+      <input type="text" ng-model="ctrl.licenseInfo.company" class="gf-form-input max-width-30" readonly>
+    </div>
+    <div class="gf-form">
+      <span class="gf-form-label width-10">安装ID</span>
+      <input type="text" ng-model="ctrl.licenseInfo.installedID" class="gf-form-input max-width-30" ng-class="{'license-input-error': ctrl.isLegalLicenseInfo.installedClusterMismatch}" readonly>
+    </div>
+    <div class="gf-form">
+      <span class="gf-form-label width-10">实际安装ID</span>
+      <input type="text" ng-model="ctrl.licenseInfo.actualID" class="gf-form-input max-width-30" ng-class="{'license-input-error': ctrl.isLegalLicenseInfo.installedClusterMismatch}" readonly>
+      <span ng-if="ctrl.isLegalLicenseInfo.installedClusterMismatch" class="alert-span">*安装集群和实际集群不符</span>
+    </div>
+    <div class="gf-form">
+      <span class="gf-form-label width-10">集群规模</span>
+      <input type="text" ng-model="ctrl.licenseInfo.clusterSize" class="gf-form-input max-width-30" ng-class="{'license-input-error': ctrl.isLegalLicenseInfo.clusterSizeMismatch}" readonly>
+    </div>
+    <div class="gf-form">
+      <span class="gf-form-label width-10">实际集群规模</span>
+      <input type="text" ng-model="ctrl.licenseInfo.actualScale" class="gf-form-input max-width-30" ng-class="{'license-input-error': ctrl.isLegalLicenseInfo.clusterSizeMismatch}" readonly>
+      <span ng-if="ctrl.isLegalLicenseInfo.clusterSizeMismatch" class="alert-span">*安装集群规模和授权集群规模不符</span>
+    </div>
+    <div class="gf-form">
+      <span class="gf-form-label width-10">授权码</span>
+      <textarea ng-model="ctrl.licenseInfo.licenseKey" class="gf-form-input max-width-30" rows="8" readonly/>
+    </div>
+    <div class="gf-form">
+      <span class="gf-form-label width-10">授权天数</span>
+      <input type="text" ng-model="ctrl.licenseInfo.licenseDays" class="gf-form-input max-width-30" ng-class="{'license-input-error': ctrl.isLegalLicenseInfo.licenseExpired}" readonly>
+      <span ng-if="ctrl.isLegalLicenseInfo.licenseExpired" class="alert-span">*授权信息已过期</span>
+    </div>
+    <div class="gf-form">
+      <span class="gf-form-label width-10">激活时间</span>
+      <input type="text" ng-model="ctrl.licenseInfo.activeTime * 1000 | date:'yyyy-MM-dd'" class="gf-form-input max-width-30" ng-class="{'license-input-error': ctrl.isLegalLicenseInfo.licenseExpired}" readonly>
+    </div>
+
+    <div class="gf-form-button-row">
+      <a class="btn btn-primary" href="license/upload">
+        更新license
+      </a>
+    </div>
+  </form>
+
+</div>

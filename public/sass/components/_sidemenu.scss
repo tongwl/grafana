@@ -76,6 +76,30 @@ $mobile-menu-breakpoint: md;
       }
     }
   }
+
+  .fa-exclamation,
+  .fa-exclamation-circle {
+    display: none;
+  }
+
+  &.cancel-dropdown {
+    position: relative;
+
+    .fa-exclamation,
+    .fa-exclamation-circle {
+      display: block;
+      position: absolute;
+      right: 14px;
+      top: 8px;
+      color: #f00;
+      font-size: 18px;
+      -webkit-pointer-events: none;
+      -moz-pointer-events: none;
+      -ms-pointer-events: none;
+      -o-pointer-events: none;
+      pointer-events: none;
+    }
+  }
 }
 
 .dropup.sidemenu-item:hover .dropdown-menu {

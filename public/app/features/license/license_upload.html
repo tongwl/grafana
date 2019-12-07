@@ -1,0 +1,23 @@
+<page-header model="navModel"></page-header>
+
+<div class="page-container page-body license-page-container">
+  <div class="page-sub-heading">
+    <h3 class="page-sub-heading">请输入/导入授权码</h3>
+  </div>
+
+  <form name="uploadForm" class="gf-form-group license-form">
+    <div class="gf-form">
+      <span class="gf-form-label width-10">授权码</span>
+      <textarea ng-model="licenseKey" required class="gf-form-input max-width-30" rows="8"/>
+
+      <input type="file" id="upload-license-key" name="dashupload" class="hide"/>
+      <label class="btn btn-primary btn-small upload-license-key-label" title="请选择要导入的授权码文件" for="upload-license-key">
+        <i class="fa fa-upload"></i>
+      </label>
+
+    </div>
+    <div class="gf-form-button-row">
+      <button type="submit" class="btn btn-primary" ng-click="update()">更新license</button>
+    </div>
+  </form>
+</div>
