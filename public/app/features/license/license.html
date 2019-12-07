@@ -41,12 +41,11 @@
       <span class="gf-form-label width-10">激活时间</span>
       <input type="text" ng-model="ctrl.licenseInfo.activeTime * 1000 | date:'yyyy-MM-dd'" class="gf-form-input max-width-30" ng-class="{'license-input-error': ctrl.isLegalLicenseInfo.licenseExpired}" readonly>
     </div>
-
-    <div class="gf-form-button-row">
-      <a class="btn btn-primary" href="license/upload">
-        更新license
-      </a>
-    </div>
   </form>
+  <div class="gf-form-button-row">
+    <a class="btn btn-primary" href="license/upload">
+      更新license
+    </a>
+  </div>
 
 </div>
