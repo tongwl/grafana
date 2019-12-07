@@ -12,6 +12,8 @@ import PluginListPage from 'app/features/plugins/PluginListPage';
 import FolderSettingsPage from 'app/features/folders/FolderSettingsPage';
 import FolderPermissions from 'app/features/folders/FolderPermissions';
 import CreateFolderCtrl from 'app/features/folders/CreateFolderCtrl';
+import LicenseCtrl from 'app/features/license/LicenseCtrl';
+import LicenseUploadCtrl from 'app/features/license/LicenseUploadCtrl';
 import FolderDashboardsCtrl from 'app/features/folders/FolderDashboardsCtrl';
 import DashboardImportCtrl from 'app/features/manage-dashboards/DashboardImportCtrl';
 import DataSourcesListPage from 'app/features/datasources/DataSourcesListPage';
@@ -233,6 +235,17 @@ export function setupAngularRoutes($routeProvider, $locationProvider) {
     .when('/profile/select-org', {
       templateUrl: 'public/app/features/org/partials/select_org.html',
       controller: 'SelectOrgCtrl',
+    })
+    // LICENSE
+    .when('/license/list', {
+      templateUrl: 'public/app/features/license/license.html',
+      controller: LicenseCtrl,
+      controllerAs: 'ctrl',
+    })
+    .when('/license/upload', {
+      templateUrl: 'public/app/features/license/license_upload.html',
+      controller: LicenseUploadCtrl,
+      controllerAs: 'ctrl',
     })
     // ADMIN
     .when('/admin', {

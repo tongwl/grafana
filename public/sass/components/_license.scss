@@ -1,0 +1,39 @@
+.license-page-container {
+  .alert-container {
+    margin-bottom: 28px;
+    padding: 10px;
+    border: 2px dotted #db4d10;
+    background-color: #ffdc77;
+    color: #f00;
+
+    .fa-exclamation-circle {
+      margin-right: 5px;
+    }
+  }
+
+  .license-form {
+    $error-color: #f33;
+
+    .gf-form-input[readonly] {
+      background-color: #09090b;
+      cursor: default;
+    }
+
+    .upload-license-key-label {
+      margin-top: 3px;
+      margin-left: 10px;
+    }
+
+    .license-input-error {
+      border: 1px solid $error-color;
+    }
+
+    .alert-span {
+      margin-left: 5px;
+      display: inline-block;
+      height: 35px;
+      line-height: 35px;
+      color: $error-color;
+    }
+  }
+}

@@ -17,6 +17,29 @@ export class NavModelSrv {
 
   getNav(...args) {
     let children = this.navItems;
+    if (
+      _.every(children, link => {
+        return link.id !== 'license';
+      })
+    ) {
+      children.push({
+        children: [
+          {
+            icon: 'gicon gicon-apikeys',
+            id: 'license-list',
+            text: 'license管理',
+            url: '/license/list',
+          },
+        ],
+        icon: 'gicon gicon-apikeys',
+        id: 'license',
+        subTitle: 'License',
+        text: 'License',
+        url: '/license/list',
+        legalLicense: true,
+        licenseMessage: '',
+      });
+    }
     const nav = {
       breadcrumbs: [],
     } as NavModel;
