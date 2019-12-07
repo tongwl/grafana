@@ -16,7 +16,6 @@ import (
 	"math/big"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/grafana/grafana/pkg/log"
@@ -157,52 +156,44 @@ func LoadFile() {
 	updateFromFile(*licenseFile)
 }
 
+type Cluster struct {
+	Scale     int64  `json:"scale"`
+	InstallId string `json:"installID"`
+}
+
 func (e *LicenseService) TmrTick(grafanaCtx context.Context) error {
-	t1 := time.Tick(30 * time.Second)
+	t1 := time.Tick(10 * time.Second)
 	for {
 		select {
 		case <-t1:
-			licenseGlobal.actualID = installIDGet()
-			licenseGlobal.actualScale = scaleGet()
+			c := installIDGet()
+			licenseGlobal.actualID = c.InstallId
+			licenseGlobal.actualScale = c.Scale
 		}
 	}
 }
 
 //TODO exporter get installation implementation
-func installIDGet() string {
-	resp, err := http.Get("http://127.0.0.1:9191/installation")
+func installIDGet() *Cluster {
+	resp, err := http.Get("http://127.0.0.1:9191/cluster")
 	if err != nil {
 		// handle error
-		return ""
+		return &Cluster{0, "获取集群信息失败"}
 	}
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		// handle error
-		return ""
+		return &Cluster{0, "读取集群信息失败"}
 	}
 
-	return (string(body))
-}
-
-//TODO exporter get scale implementation
-func scaleGet() int64 {
-	resp, err := http.Get("http://127.0.0.1:9191/scale")
+	cluster := &Cluster{}
+	err = json.Unmarshal(body, &cluster)
 	if err != nil {
-		// handle error
-		return 0
+		return &Cluster{0, "解析集群信息失败"}
 	}
-
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		// handle error
-		return 0
-	}
-	x, err := strconv.ParseInt(string(body), 10, 64)
-
-	return x
+	return cluster
 }
 
 func GetLicenseCompany() string {
