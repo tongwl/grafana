@@ -20,7 +20,6 @@ import (
 
 	"github.com/grafana/grafana/pkg/log"
 	"github.com/grafana/grafana/pkg/registry"
-	"github.com/grafana/grafana/pkg/setting"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -74,7 +73,7 @@ func (e *LicenseService) Init() error {
 var logger = log.New("license service")
 
 func SaveFile() {
-	filePath := setting.HomePath + "//chenqi.lic"
+	filePath := "/var/lib/grafana/chenqi.lic"
 	//1、打开文件
 	file, err := os.OpenFile(filePath, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0644)
 	defer file.Close()
@@ -139,7 +138,7 @@ func updateFromFile(licenseFile LicenseFile) {
 }
 
 func LoadFile() {
-	data, err := ioutil.ReadFile(setting.HomePath + "//chenqi.lic")
+	data, err := ioutil.ReadFile("/var/lib/grafana/chenqi.lic")
 	if err != nil {
 		logger.Info("Read license file failed", "error", err)
 		licenseGlobal.loadstatus = -1
