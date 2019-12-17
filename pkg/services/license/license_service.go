@@ -264,7 +264,8 @@ func VerifyLicense() string {
 	if (licenseGlobal.verbose.CreateTime + licenseGlobal.verbose.Days*86400) < time.Now().Unix() {
 		return "授权信息过期"
 	}
-	if (licenseGlobal.verbose.InstallID != licenseGlobal.actualID) && licenseGlobal.actualID != "" {
+	if (licenseGlobal.verbose.InstallID != licenseGlobal.actualID) && (licenseGlobal.actualID != "") &&
+		(licenseGlobal.verbose.InstallID != "temp") {
 		return "安装集群不符"
 	}
 	if licenseGlobal.verbose.Scale < licenseGlobal.actualScale && licenseGlobal.actualScale > 0 {
