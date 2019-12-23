@@ -200,6 +200,10 @@ func GetLicenseCompany() string {
 	return licenseGlobal.verbose.Company
 }
 
+func GetCurrentTime() int64 {
+	return time.Now().Unix()
+}
+
 func GetCreateTime() int64 {
 	return licenseGlobal.verbose.CreateTime
 }

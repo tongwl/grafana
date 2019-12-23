@@ -1,3 +1,6 @@
+import { saveAs } from 'file-saver';
+import angular from 'angular';
+import moment from 'moment';
 export default class LicenseCtrl {
   navModel: any;
   isLoading = true;
@@ -19,6 +22,7 @@ export default class LicenseCtrl {
     licenseDays: null,
     licenseKey: null,
     activeTime: null,
+    systemTime: null,
     clusterSize: null,
   };
   /** @ngInject */
@@ -88,9 +92,21 @@ export default class LicenseCtrl {
             actualScale: license['实际规模'],
             licenseDays: license['授权天数'],
             licenseKey: license['授权码'],
-            activeTime: license['激活时间'],
+            activeTime: moment(license['激活时间'] * 1000).format('YYYY-MM-DD'),
+            systemTime: moment(license['系统时间'] * 1000).format('YYYY-MM-DD'),
             clusterSize: license['集群规模'],
           };
+
+          const days =
+            license['授权天数'] - moment(license['系统时间'] * 1000).diff(moment(license['激活时间'] * 1000), 'day');
+          if (days <= 30) {
+            this.isLegalLicenseInfo.showAlert = true;
+            this.isLegalLicenseInfo.alertMessage = `亲爱的用户，您的授权码将于${days}天后(
+                ${moment(license['激活时间'] * 1000)
+                  .add(license['授权天数'], 'day')
+                  .format('YYYY-MM-DD')}
+                 )到期，请及时续费。`;
+          }
         } else {
           this.initIsLegalLicenseInfo();
           this.isLegalLicenseInfo.showAlert = true;
@@ -105,6 +121,25 @@ export default class LicenseCtrl {
         this.isLegalLicenseInfo.serverAPIError = true;
       }
     );
+  }
+
+  downloadLicense() {
+    this.backendSrv.get('/license/informationverbose').then(license => {
+      const blob = new Blob(
+        [
+          angular.toJson(
+            {
+              actualID: license['实际安装ID'],
+            },
+            true
+          ),
+        ],
+        {
+          type: 'application/json;charset=utf-8',
+        }
+      );
+      saveAs(blob, 'license.json');
+    });
   }
 
   private initIsLegalLicenseInfo(): void {

@@ -15,7 +15,7 @@ export class ChangePasswordCtrl {
       }
 
       if ($scope.command.newPassword !== $scope.command.confirmNew) {
-        $scope.appEvent('alert-warning', ['New passwords do not match', '']);
+        $scope.appEvent('alert-warning', ['您输入的新密码不一致，请确认', '']);
         return;
       }
 

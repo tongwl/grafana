@@ -21,6 +21,7 @@
 // Search
 .search-dropdown {
   display: flex;
+  background-color: #161719;
   flex-direction: column;
   height: calc(100% - #{$navbarHeight});
 }
@@ -42,7 +43,7 @@
   flex-grow: 1;
   height: 100%;
   padding-top: 16px;
-  display: none;
+  display: none !important;
   flex-direction: column;
 }
 

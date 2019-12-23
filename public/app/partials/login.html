@@ -7,6 +7,7 @@
     <div class="login-outer-box">
       <div class="login-inner-box" id="login-view">
         <form name="loginForm" class="login-form-group gf-form-group" ng-hide="disableLoginForm">
+          <img src="public/img/cx/cx_login1.png" alt="" class="login-form-png">
           <div class="login-form">
             <input type="text" name="username" class="gf-form-input login-form-input" required ng-model='formModel.user' placeholder={{loginHint}}
               autofocus autofill-event-fix>
@@ -58,11 +59,6 @@
             <i class="btn-service-icon fa fa-gitlab"></i>
             Sign in with GitLab
           </a>
-          <a class="btn btn-medium btn-service btn-service--grafanacom login-btn" href="login/grafana_com" target="_self"
-            ng-if="oauth.grafana_com">
-            <i class="btn-service-icon"></i>
-            Sign in with Grafana.com
-          </a>
           <a class="btn btn-medium btn-service btn-service--oauth login-btn" href="login/generic_oauth" target="_self"
             ng-if="oauth.generic_oauth">
             <i class="btn-service-icon fa fa-sign-in"></i>
@@ -71,7 +67,7 @@
         </div>
         <div class="login-signup-box" ng-show="!disableUserSignUp">
           <div class="login-signup-title p-r-1">
-            New to Grafana?
+            New to 辰栖科技?
           </div>
           <a href="signup" class="btn btn-medium btn-signup btn-p-x-2">
             Sign Up

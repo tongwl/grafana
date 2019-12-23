@@ -29,6 +29,7 @@ func GetLicenseInfoVerbose(c *m.ReqContext) Response {
 		"集群规模":   license.GetScale(),
 		"实际安装ID": license.GetActualID(),
 		"实际规模":   license.GetActualScale(),
+		"系统时间":   license.GetCurrentTime(),
 	})
 }
 

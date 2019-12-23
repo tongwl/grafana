@@ -5,10 +5,8 @@ import config from '../../config';
 
 class TopSection extends Component {
   settingsRequest: any;
-  licenseRequest: any;
-  timer: any;
   state = {
-    showCreate: false,
+    showAll: false,
     legalLicense: true,
     licenseMessage: '',
   };
@@ -16,41 +14,21 @@ class TopSection extends Component {
     const navTree = _.cloneDeep(config.bootData.navTree);
     //const mainLinks = _.filter(navTree, item => !item.hideFromMenu);
     const mainLinks = _.filter(navTree, item => !item.hideFromMenu && item.id !== 'explore');
-    if (
-      _.every(mainLinks, link => {
-        if (link.id === 'license') {
-          link.legalLicense = this.state.legalLicense;
-          link.licenseMessage = this.state.licenseMessage;
-          return false;
-        } else {
-          return true;
-        }
-      })
-    ) {
-      mainLinks.push({
-        children: [
-          {
-            icon: 'gicon gicon-apikeys',
-            id: 'license-list',
-            text: 'license管理',
-            url: '/license/list',
-          },
-        ],
-        icon: 'gicon gicon-apikeys',
-        id: 'license',
-        subTitle: 'License',
-        text: 'License',
-        url: '/license/list',
-        legalLicense: this.state.legalLicense,
-        licenseMessage: this.state.licenseMessage,
-      });
-    }
-    if (!this.state.showCreate) {
+
+    //remove item
+    if (!this.state.showAll) {
       _.remove(mainLinks, link => {
-        return link.id === 'create';
+        return (
+          link.id === 'create' ||
+          link.id === 'dashboards' ||
+          link.id === 'alerting' ||
+          link.id === 'cfg' ||
+          link.id === 'admin'
+        );
       });
     }
 
+    //translate
     _.forEach(mainLinks, link => {
       switch (link.id) {
         // case "explore":
@@ -188,55 +166,25 @@ class TopSection extends Component {
     );
   }
 
-  getLicense() {
+  showButtons() {
     this.settingsRequest = $.ajax({
       type: 'GET',
       dataType: 'json',
       url: 'public/setting.json?v=' + Math.random(),
       success: (result: any) => {
         this.setState({
-          showCreate: result.showCreate,
-        });
-      },
-    });
-
-    this.licenseRequest = $.ajax({
-      type: 'GET',
-      dataType: 'json',
-      url: '/license/information',
-      success: (result: any) => {
-        if (result) {
-          this.setState({
-            legalLicense: result['授权状态'] === '授权信息正常',
-            licenseMessage: result['授权状态'],
-          });
-        } else {
-          this.setState({
-            legalLicense: false,
-            licenseMessage: '加载授权信息失败',
-          });
-        }
-      },
-      error: () => {
-        this.setState({
-          legalLicense: false,
-          licenseMessage: '加载授权信息失败',
+          showAll: result.showAll,
         });
       },
     });
   }
 
   componentDidMount() {
-    this.getLicense();
-    this.timer = window.setInterval(() => {
-      this.getLicense();
-    }, 10000);
+    this.showButtons();
   }
 
   componentWillUnmount() {
-    clearInterval(this.timer);
     this.settingsRequest.abort();
-    this.licenseRequest.abort();
   }
 }
 

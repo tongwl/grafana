@@ -12,7 +12,7 @@ const template = `
   <span class="panel-time-info" ng-if="ctrl.timeInfo"><i class="fa fa-clock-o"></i> {{ctrl.timeInfo}}</span>
 </span>`;
 
-function renderMenuItem(item, ctrl) {
+/*function renderMenuItem(item, ctrl) {
   let html = '';
   let listItemClass = '';
 
@@ -52,17 +52,17 @@ function renderMenuItem(item, ctrl) {
 
   html += `</li>`;
   return html;
-}
+}*/
 
-function createMenuTemplate(ctrl) {
-  let html = '';
-
-  for (const item of ctrl.getMenu()) {
-    html += renderMenuItem(item, ctrl);
-  }
-
-  return html;
-}
+// function createMenuTemplate(ctrl) {
+//   let html = '';
+//
+//   for (const item of ctrl.getMenu()) {
+//     html += renderMenuItem(item, ctrl);
+//   }
+//
+//   return html;
+// }
 
 /** @ngInject */
 function panelHeader($compile) {
@@ -70,11 +70,10 @@ function panelHeader($compile) {
     restrict: 'E',
     template: template,
     link: (scope, elem, attrs) => {
-      const menuElem = elem.find('.panel-menu');
-      let menuScope;
-      let isDragged;
-
-      elem.click(evt => {
+      //const menuElem = elem.find('.panel-menu');
+      //let menuScope;
+      //let isDragged;
+      /*elem.click(evt => {
         const targetClass = evt.target.className;
 
         // remove existing scope
@@ -90,16 +89,14 @@ function panelHeader($compile) {
         if (targetClass.indexOf('panel-title-text') >= 0 || targetClass.indexOf('panel-title') >= 0) {
           togglePanelMenu(evt);
         }
-      });
-
-      function togglePanelMenu(e) {
-        if (!isDragged) {
-          e.stopPropagation();
-          elem.find('[data-toggle=dropdown]').dropdown('toggle');
-        }
-      }
-
-      let mouseX, mouseY;
+      });*/
+      // function togglePanelMenu(e) {
+      //   if (!isDragged) {
+      //     e.stopPropagation();
+      //     elem.find('[data-toggle=dropdown]').dropdown('toggle');
+      //   }
+      // }
+      /*let mouseX, mouseY;
       elem.mousedown(e => {
         mouseX = e.pageX;
         mouseY = e.pageY;
@@ -111,7 +108,7 @@ function panelHeader($compile) {
         } else {
           isDragged = true;
         }
-      });
+      });*/
     },
   };
 }

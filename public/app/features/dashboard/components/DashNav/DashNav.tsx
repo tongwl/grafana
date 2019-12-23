@@ -36,7 +36,7 @@ export interface StateProps {
 type Props = StateProps & OwnProps;
 
 interface State {
-  settingsEnabled: boolean;
+  showAll: boolean;
 }
 
 export class DashNav extends PureComponent<Props, State> {
@@ -49,7 +49,7 @@ export class DashNav extends PureComponent<Props, State> {
     super(props);
     this.playlistSrv = this.props.$injector.get('playlistSrv');
     this.state = {
-      settingsEnabled: false,
+      showAll: false,
     };
   }
 
@@ -60,7 +60,7 @@ export class DashNav extends PureComponent<Props, State> {
       url: 'public/setting.json?v=' + Math.random(),
       success: (result: any) => {
         this.setState({
-          settingsEnabled: result.showSettings,
+          showAll: result.showAll,
         });
       },
     });
@@ -211,13 +211,13 @@ export class DashNav extends PureComponent<Props, State> {
     const { canStar, canSave, canShare, showSettings, isStarred } = dashboard.meta;
     const { snapshot } = dashboard;
     const snapshotUrl = snapshot && snapshot.originalUrl;
-    const { settingsEnabled } = this.state;
+    const { showAll } = this.state;
     return (
       <div className="navbar">
         {this.isInFullscreenOrSettings && this.renderBackButton()}
         {this.renderDashboardTitleSearchButton()}
 
-        {this.playlistSrv.isPlaying && (
+        {this.playlistSrv.isPlaying && showAll && (
           <div className="navbar-buttons navbar-buttons--playlist">
             <DashNavButton
               tooltip="Go to previous dashboard"
@@ -241,7 +241,7 @@ export class DashNav extends PureComponent<Props, State> {
         )}
 
         <div className="navbar-buttons navbar-buttons--actions">
-          {canSave && (
+          {canSave && showAll && (
             <DashNavButton
               tooltip="Add panel"
               classSuffix="add-panel"
@@ -250,7 +250,7 @@ export class DashNav extends PureComponent<Props, State> {
             />
           )}
 
-          {canStar && (
+          {canStar && showAll && (
             <DashNavButton
               tooltip="Mark as favorite"
               classSuffix="star"
@@ -259,7 +259,7 @@ export class DashNav extends PureComponent<Props, State> {
             />
           )}
 
-          {canShare && (
+          {canShare && showAll && (
             <DashNavButton
               tooltip="Share dashboard"
               classSuffix="share"
@@ -268,11 +268,11 @@ export class DashNav extends PureComponent<Props, State> {
             />
           )}
 
-          {canSave && (
+          {canSave && showAll && (
             <DashNavButton tooltip="Save dashboard" classSuffix="save" icon="fa fa-save" onClick={this.onSave} />
           )}
 
-          {snapshotUrl && (
+          {snapshotUrl && showAll && (
             <DashNavButton
               tooltip="Open original dashboard"
               classSuffix="snapshot-origin"
@@ -281,7 +281,7 @@ export class DashNav extends PureComponent<Props, State> {
             />
           )}
 
-          {showSettings && settingsEnabled && (
+          {showSettings && showAll && (
             <DashNavButton
               tooltip="Dashboard settings"
               classSuffix="settings"

@@ -20,9 +20,9 @@ export class ResetPasswordCtrl {
     $scope.navModel = {
       main: {
         icon: 'gicon gicon-branding',
-        text: 'Reset Password',
-        subTitle: 'Reset your Grafana password',
-        breadcrumbs: [{ title: 'Login', url: 'login' }],
+        text: '重置密码',
+        subTitle: '重置密码',
+        breadcrumbs: [{ title: '登录', url: 'login' }],
       },
     };
 

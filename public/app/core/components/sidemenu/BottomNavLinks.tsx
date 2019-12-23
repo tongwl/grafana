@@ -26,13 +26,21 @@ class BottomNavLinks extends PureComponent<Props> {
   render() {
     const { link, user } = this.props;
     return (
-      <div className="sidemenu-item dropdown dropup">
-        <a href={link.url} className="sidemenu-link" target={link.target}>
+      <div
+        className={`sidemenu-item dropdown dropup ${link.id === 'license' && !link.legalLicense && 'cancel-dropdown'}`}
+      >
+        <a
+          href={link.url}
+          className="sidemenu-link"
+          target={link.target}
+          title={link.id === 'license' && !link.legalLicense ? link.licenseMessage : ''}
+        >
           <span className="icon-circle sidemenu-icon">
             {link.icon && <i className={link.icon} />}
             {link.img && <img src={link.img} />}
           </span>
         </a>
+        {link.id === 'license' && !link.legalLicense && <i className="fa fa-exclamation-circle" />}
         <ul className="dropdown-menu dropdown-menu--sidemenu" role="menu">
           {link.subTitle && (
             <li className="sidemenu-subtitle">

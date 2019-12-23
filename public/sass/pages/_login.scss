@@ -10,12 +10,12 @@ $login-border: #8daac5;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url(../img/heatmap_bg_test.svg);
+  background-image: url(../img/cx/cx_login_bg.jpg);
   background-size: cover;
   color: #d8d9da;
 
   & a {
-    color: #d8d9da !important;
+    color: #eee !important;
   }
 
   & .btn-primary {
@@ -49,6 +49,10 @@ select:-webkit-autofill:focus {
 
 .login-form {
   margin-bottom: $space-md;
+  width: 100%;
+}
+
+.login-form-png {
   width: 100%;
 }
 

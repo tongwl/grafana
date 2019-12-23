@@ -16,11 +16,11 @@ export interface State {
   dashboards: DashboardSearchHit[];
 }
 
-const themes = [{ value: '', label: 'Default' }, { value: 'dark', label: 'Dark' }, { value: 'light', label: 'Light' }];
+const themes = [{ value: '', label: '默认' }, { value: 'dark', label: '黑色' }, { value: 'light', label: '亮色' }];
 
 const timezones = [
-  { value: '', label: 'Default' },
-  { value: 'browser', label: 'Local browser time' },
+  { value: '', label: '默认' },
+  { value: 'browser', label: '本地时间' },
   { value: 'utc', label: 'UTC' },
 ];
 
@@ -43,7 +43,7 @@ export class SharedPreferences extends PureComponent<Props, State> {
     const dashboards = await this.backendSrv.search({ starred: true });
     const defaultDashboardHit: DashboardSearchHit = {
       id: 0,
-      title: 'Default',
+      title: '默认',
       tags: [],
       type: '' as DashboardSearchHitType,
       uid: '',
@@ -102,9 +102,9 @@ export class SharedPreferences extends PureComponent<Props, State> {
 
     return (
       <form className="section gf-form-group" onSubmit={this.onSubmitForm}>
-        <h3 className="page-heading">Preferences</h3>
+        <h3 className="page-heading">首选项</h3>
         <div className="gf-form">
-          <span className="gf-form-label width-11">UI Theme</span>
+          <span className="gf-form-label width-11">界面风格</span>
           <Select
             isSearchable={false}
             value={themes.find(item => item.value === theme)}
@@ -114,11 +114,8 @@ export class SharedPreferences extends PureComponent<Props, State> {
           />
         </div>
         <div className="gf-form">
-          <FormLabel
-            width={11}
-            tooltip="Not finding dashboard you want? Star it first, then it should appear in this select box."
-          >
-            Home Dashboard
+          <FormLabel width={11} tooltip="找不到想要的面板？在您想要设置的面板界面加注星标后即可在本处设置。">
+            主页面板
           </FormLabel>
           <Select
             value={dashboards.find(dashboard => dashboard.id === homeDashboardId)}
@@ -126,12 +123,12 @@ export class SharedPreferences extends PureComponent<Props, State> {
             getOptionLabel={i => i.title}
             onChange={(dashboard: DashboardSearchHit) => this.onHomeDashboardChanged(dashboard.id)}
             options={dashboards}
-            placeholder="Chose default dashboard"
+            placeholder="选择默认面板"
             width={20}
           />
         </div>
         <div className="gf-form">
-          <label className="gf-form-label width-11">Timezone</label>
+          <label className="gf-form-label width-11">时区</label>
           <Select
             isSearchable={false}
             value={timezones.find(item => item.value === timezone)}
@@ -142,7 +139,7 @@ export class SharedPreferences extends PureComponent<Props, State> {
         </div>
         <div className="gf-form-button-row">
           <button type="submit" className="btn btn-primary">
-            Save
+            保存
           </button>
         </div>
       </form>
