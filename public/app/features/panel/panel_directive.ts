@@ -2,6 +2,8 @@ import angular from 'angular';
 import $ from 'jquery';
 import Drop from 'tether-drop';
 import baron from 'baron';
+const html2canvas = require('html2canvas');
+const jsPDF = require('jsPDF');
 
 const module = angular.module('grafana.directives');
 
@@ -212,50 +214,31 @@ module.directive('grafanaPanel', ($rootScope, $document, $timeout) => {
         }
       });
 
-      function loadJs(src) {
-        return new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.onload = () => {
-            resolve();
-          };
-          script.onerror = () => {
-            reject();
-          };
-          script.src = src;
-          document.getElementsByTagName('body')[0].appendChild(script);
-        });
-      }
-
       ctrl.export = event => {
-        loadJs('../public/vendor/to-png/html2canvas.js').then(() => {
-          loadJs('../public/vendor/to-png/jspdf.js').then(() => {
-            const pageContainer = $(event.target).parents('.panel-container');
-            const outerWidth = pageContainer.outerWidth();
-            const outerHeight = pageContainer.outerHeight();
-            let pdfTitle = $(event.target)
-              .parent('.panel-header')
-              .find('panel-header .panel-title-text')
-              .text();
-            if (pdfTitle === '' || pdfTitle === null || pdfTitle === undefined) {
-              pdfTitle = Math.floor(Math.random() * 100000000000).toString();
-            }
-            html2canvas(pageContainer[0], {
-              width: outerWidth,
-              height: outerHeight,
-            }).then(canvas => {
-              const pageData = canvas.toDataURL('image/png');
-              const PDF = new jsPDF('p', 'px', 'a4');
-              const width = PDF.internal.pageSize.width;
-              const height = PDF.internal.pageSize.height;
-              if ((outerHeight * width) / outerWidth > height) {
-                PDF.addImage(pageData, 'PNG', 0, 0, (outerWidth * height) / outerHeight, height);
-              } else {
-                PDF.addImage(pageData, 'PNG', 0, 0, width, (outerHeight * width) / outerWidth);
-              }
-              PDF.save(`${pdfTitle}.pdf`);
-            });
-          });
+        const pageContainer = $(event.target).parents('.panel-container');
+        const outerWidth = pageContainer.outerWidth();
+        const outerHeight = pageContainer.outerHeight();
+        let pdfTitle = $(event.target)
+          .parent('.panel-header')
+          .find('panel-header .panel-title-text')
+          .text();
+        if (pdfTitle === '' || pdfTitle === null || pdfTitle === undefined) {
+          pdfTitle = Math.floor(Math.random() * 100000000000).toString();
+        }
+        html2canvas(pageContainer[0], {
+          width: outerWidth,
+          height: outerHeight,
+        }).then(canvas => {
+          const pageData = canvas.toDataURL('image/png');
+          const PDF = new jsPDF('p', 'px', 'a4');
+          const width = PDF.internal.pageSize.width;
+          const height = PDF.internal.pageSize.height;
+          if ((outerHeight * width) / outerWidth > height) {
+            PDF.addImage(pageData, 'PNG', 0, 0, (outerWidth * height) / outerHeight, height);
+          } else {
+            PDF.addImage(pageData, 'PNG', 0, 0, width, (outerHeight * width) / outerWidth);
+          }
+          PDF.save(`${pdfTitle}.pdf`);
         });
       };
     },
