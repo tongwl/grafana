@@ -3,7 +3,7 @@ import $ from 'jquery';
 import Drop from 'tether-drop';
 import baron from 'baron';
 const html2canvas = require('html2canvas');
-const jsPDF = require('jsPDF');
+const jsPDF = require('jspdf');
 
 const module = angular.module('grafana.directives');
 
