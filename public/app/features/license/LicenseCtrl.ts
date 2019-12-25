@@ -97,15 +97,17 @@ export default class LicenseCtrl {
             clusterSize: license['集群规模'],
           };
 
-          const days =
-            license['授权天数'] - moment(license['系统时间'] * 1000).diff(moment(license['激活时间'] * 1000), 'day');
-          if (days <= 30) {
-            this.isLegalLicenseInfo.showAlert = true;
-            this.isLegalLicenseInfo.alertMessage = `亲爱的用户，您的授权码将于${days}天后(
+          if (license['激活时间'] > 0) {
+            const days =
+              license['授权天数'] - moment(license['系统时间'] * 1000).diff(moment(license['激活时间'] * 1000), 'day');
+            if (days <= 30) {
+              this.isLegalLicenseInfo.showAlert = true;
+              this.isLegalLicenseInfo.alertMessage = `亲爱的用户，您的授权码将于${days}天后(
                 ${moment(license['激活时间'] * 1000)
                   .add(license['授权天数'], 'day')
                   .format('YYYY-MM-DD')}
                  )到期，请及时续费。`;
+            }
           }
         } else {
           this.initIsLegalLicenseInfo();
