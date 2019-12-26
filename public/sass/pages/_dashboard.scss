@@ -60,6 +60,22 @@ div.flot-text {
     border: none;
   }
 
+  &:hover {
+    .panel-menu-toggle {
+      visibility: visible;
+      transition: opacity 0.1s ease-in 0.2s;
+      opacity: 1;
+    }
+  }
+
+  &.panel-container-disable-dropdown:hover {
+    .panel-menu-toggle {
+      visibility: hidden;
+      transition: none;
+      opacity: 0;
+    }
+  }
+
   &--is-editing {
     height: auto;
   }

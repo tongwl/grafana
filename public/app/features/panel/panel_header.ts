@@ -1,7 +1,7 @@
 import { coreModule } from 'app/core/core';
 
 const template = `
-<span class="panel-title">
+<span class="panel-title" ng-class="{'panel-title-disable-dropdown': !ctrl.showAll}">
   <span class="icon-gf panel-alert-icon"></span>
   <span class="panel-title-text">{{ctrl.panel.title | interpolateTemplateVars:this}}</span>
   <span class="panel-menu-container dropdown">
@@ -9,10 +9,9 @@ const template = `
     <ul class="dropdown-menu dropdown-menu--menu panel-menu" role="menu">
     </ul>
   </span>
-  <span class="panel-time-info" ng-if="ctrl.timeInfo"><i class="fa fa-clock-o"></i> {{ctrl.timeInfo}}</span>
 </span>`;
 
-/*function renderMenuItem(item, ctrl) {
+function renderMenuItem(item, ctrl) {
   let html = '';
   let listItemClass = '';
 
@@ -52,17 +51,17 @@ const template = `
 
   html += `</li>`;
   return html;
-}*/
+}
 
-// function createMenuTemplate(ctrl) {
-//   let html = '';
-//
-//   for (const item of ctrl.getMenu()) {
-//     html += renderMenuItem(item, ctrl);
-//   }
-//
-//   return html;
-// }
+function createMenuTemplate(ctrl) {
+  let html = '';
+
+  for (const item of ctrl.getMenu()) {
+    html += renderMenuItem(item, ctrl);
+  }
+
+  return html;
+}
 
 /** @ngInject */
 function panelHeader($compile) {
@@ -70,33 +69,47 @@ function panelHeader($compile) {
     restrict: 'E',
     template: template,
     link: (scope, elem, attrs) => {
-      //const menuElem = elem.find('.panel-menu');
-      //let menuScope;
-      //let isDragged;
-      /*elem.click(evt => {
-        const targetClass = evt.target.className;
+      const ctrl = scope.ctrl;
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: 'public/setting.json?v=' + Math.random(),
+        success: (result: any) => {
+          ctrl.showAll = result.showAll;
+        },
+      });
+      const menuElem = elem.find('.panel-menu');
+      let menuScope;
+      let isDragged;
 
-        // remove existing scope
-        if (menuScope) {
-          menuScope.$destroy();
+      elem.click(evt => {
+        if (ctrl.showAll) {
+          const targetClass = evt.target.className;
+
+          // remove existing scope
+          if (menuScope) {
+            menuScope.$destroy();
+          }
+
+          menuScope = scope.$new();
+          const menuHtml = createMenuTemplate(scope.ctrl);
+          menuElem.html(menuHtml);
+          $compile(menuElem)(menuScope);
+
+          if (targetClass.indexOf('panel-title-text') >= 0 || targetClass.indexOf('panel-title') >= 0) {
+            togglePanelMenu(evt);
+          }
         }
+      });
 
-        menuScope = scope.$new();
-        const menuHtml = createMenuTemplate(scope.ctrl);
-        menuElem.html(menuHtml);
-        $compile(menuElem)(menuScope);
-
-        if (targetClass.indexOf('panel-title-text') >= 0 || targetClass.indexOf('panel-title') >= 0) {
-          togglePanelMenu(evt);
+      function togglePanelMenu(e) {
+        if (!isDragged) {
+          e.stopPropagation();
+          elem.find('[data-toggle=dropdown]').dropdown('toggle');
         }
-      });*/
-      // function togglePanelMenu(e) {
-      //   if (!isDragged) {
-      //     e.stopPropagation();
-      //     elem.find('[data-toggle=dropdown]').dropdown('toggle');
-      //   }
-      // }
-      /*let mouseX, mouseY;
+      }
+
+      let mouseX, mouseY;
       elem.mousedown(e => {
         mouseX = e.pageX;
         mouseY = e.pageY;
@@ -108,7 +121,7 @@ function panelHeader($compile) {
         } else {
           isDragged = true;
         }
-      });*/
+      });
     },
   };
 }

@@ -1,5 +1,21 @@
 $panel-header-no-title-zindex: 1;
 
+.panel-header {
+  &:hover {
+    transition: background-color 0.1s ease-in-out;
+    background-color: $panel-header-hover-bg;
+  }
+}
+
+.panel-container-disable-dropdown {
+  .panel-header {
+    &:hover {
+      transition: none;
+      background-color: transparent;
+    }
+  }
+}
+
 .panel-container--no-title {
   .panel-header {
     position: absolute;
@@ -18,7 +34,7 @@ $panel-header-no-title-zindex: 1;
       position: absolute;
       top: 10px;
       font-size: 13px;
-      right: 13px;
+      right: 9px;
       cursor: pointer;
       z-index: 1;
 
@@ -45,6 +61,16 @@ $panel-header-no-title-zindex: 1;
   justify-content: center;
   height: $panel-header-height;
   align-items: center;
+
+  &.panel-title-disable-dropdown {
+    .panel-title-text {
+      cursor: default;
+
+      &:hover {
+        color: #d8d9da;
+      }
+    }
+  }
 }
 
 .panel-title-text {
@@ -52,8 +78,12 @@ $panel-header-no-title-zindex: 1;
   overflow: hidden;
   white-space: nowrap;
   max-width: calc(100% - 38px);
+  cursor: pointer;
   font-weight: $font-weight-semi-bold;
 
+  &:hover {
+    color: $link-hover-color;
+  }
   .panel-has-alert & {
     max-width: calc(100% - 54px);
   }

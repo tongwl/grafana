@@ -8,7 +8,7 @@ const jsPDF = require('jspdf');
 const module = angular.module('grafana.directives');
 
 const panelTemplate = `
-  <div class="panel-container">
+  <div class="panel-container" ng-class="{'panel-container-disable-dropdown': !ctrl.showAll}">
       <div class="panel-header" ng-class="{'grid-drag-handle': !ctrl.panel.fullscreen}">
         <span class="panel-info-corner" data-html2canvas-ignore>
           <i class="fa"></i>
@@ -44,6 +44,15 @@ module.directive('grafanaPanel', ($rootScope, $document, $timeout) => {
       const ctrl = scope.ctrl;
       let infoDrop;
       let panelScrollbar;
+
+      $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: 'public/setting.json?v=' + Math.random(),
+        success: (result: any) => {
+          ctrl.showAll = result.showAll;
+        },
+      });
 
       // the reason for handling these classes this way is for performance
       // limit the watchers on panels etc
