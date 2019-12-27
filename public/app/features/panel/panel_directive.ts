@@ -3,7 +3,7 @@ import $ from 'jquery';
 import Drop from 'tether-drop';
 import baron from 'baron';
 const html2canvas = require('html2canvas');
-const jsPDF = require('jspdf');
+import { saveAs } from 'file-saver';
 
 const module = angular.module('grafana.directives');
 
@@ -19,7 +19,10 @@ const panelTemplate = `
           <i class="fa fa-spinner fa-spin"></i>
         </span>
 
-        <i class="fa fa-file-pdf-o export-icon" ng-click="ctrl.export($event)" data-html2canvas-ignore></i>
+        <div class="export-icon">
+          <i class="fa fa-file-image-o" ng-click="ctrl.export($event)" data-html2canvas-ignore></i>
+          <span class="export-icon-tooltip">导出图片</span>
+        </div>
 
         <panel-header class="panel-title-container" panel-ctrl="ctrl"></panel-header>
       </div>
@@ -238,16 +241,9 @@ module.directive('grafanaPanel', ($rootScope, $document, $timeout) => {
           width: outerWidth,
           height: outerHeight,
         }).then(canvas => {
-          const pageData = canvas.toDataURL('image/png');
-          const PDF = new jsPDF('p', 'px', 'a4');
-          const width = PDF.internal.pageSize.width;
-          const height = PDF.internal.pageSize.height;
-          if ((outerHeight * width) / outerWidth > height) {
-            PDF.addImage(pageData, 'PNG', 0, 0, (outerWidth * height) / outerHeight, height);
-          } else {
-            PDF.addImage(pageData, 'PNG', 0, 0, width, (outerHeight * width) / outerWidth);
-          }
-          PDF.save(`${pdfTitle}.pdf`);
+          canvas.toBlob(blob => {
+            saveAs(blob, `${pdfTitle}.png`);
+          }, 'image/png');
         });
       };
     },
