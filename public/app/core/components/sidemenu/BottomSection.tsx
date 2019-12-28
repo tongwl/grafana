@@ -274,7 +274,8 @@ export default class BottomSection extends Component {
                 //   break;
               }
               if (message !== '') {
-                windowAlert(message);
+                //windowAlert(message);
+                window.location.href = 'license/list';
               }
             }
           }
