@@ -4,7 +4,7 @@ import SignIn from './SignIn';
 import BottomNavLinks from './BottomNavLinks';
 import { contextSrv } from 'app/core/services/context_srv';
 import config from '../../config';
-import windowAlert from 'vendor/window-alert/window-alert';
+//import windowAlert from 'vendor/window-alert/window-alert';
 
 export default class BottomSection extends Component {
   licenseRequest: any;
