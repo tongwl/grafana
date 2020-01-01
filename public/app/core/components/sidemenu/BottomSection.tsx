@@ -273,7 +273,7 @@ export default class BottomSection extends Component {
                 //   message = `很抱歉，${license['授权状态']}，请检查！`;
                 //   break;
               }
-              if (message !== '') {
+              if (message !== '' && window.location.href.indexOf('/license') < 0) {
                 //windowAlert(message);
                 window.location.href = 'license/list';
               }
