@@ -71,9 +71,11 @@ func (e *LicenseService) Init() error {
 }
 
 var logger = log.New("license service")
+var licenseFilePath = "/var/lib/grafana/chenqi.lic"
 
+//var licenseFilePath = "./chenqi.lic"
 func SaveFile() {
-	filePath := "/var/lib/grafana/chenqi.lic"
+	filePath := licenseFilePath
 	//1、打开文件
 	file, err := os.OpenFile(filePath, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0644)
 	defer file.Close()
@@ -97,28 +99,33 @@ func SaveFile() {
 	}
 }
 
-func UpdateLicense(k string) {
-	licenseGlobal.origin.Key = k
-	SaveFile()
-	updateFromFile(licenseGlobal.origin)
+func UpdateLicense(k string) int {
+	v, content := verifyKey(k)
+	if 0 == v {
+		licenseGlobal.origin.Key = k
+		SaveFile()
+		licenseGlobal.loadstatus = v
+		if nil != content {
+			licenseGlobal.verbose = *content
+		}
+		return 0
+	}
+	return v
 }
 
-func updateFromFile(licenseFile LicenseFile) {
-	licenseGlobal.verbose = LicenseContent{}
-	licenseKeyBytes, err := base64.StdEncoding.DecodeString(licenseFile.Key)
+func verifyKey(key string) (int, *LicenseContent) {
+	licenseKeyBytes, err := base64.StdEncoding.DecodeString(key)
 	if err != nil {
 		fmt.Println("DecodeString Failed", err.Error())
-		licenseGlobal.loadstatus = -3
-		return
+		return -3, nil
 	}
 
-	key := "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwIf+c/301BmIRMh076b+b8ToXVIYxXtL3Ozs3bRgp64mPoZaaLssUBRCdEWell5GER6buz5lUvmZIjV1VsGIuNOYQBPNgxJpOjBsS+5R4ve3F34JNSN0pqe1Ds8tUmZ1bzvaydCnqv/tCX56vTQzGmEEg5jm81VzwWUMymxVMjejmE2BM5BdGBVMeo4CN2JpRSTec//exNbPqXwjX8JBxgFFkNCD101wEidrLsAF4gPHIEu11zTvQwEtYa18WdA8C7MN1M4nic1RoAqdGJupbUDipTuyMYlDYrlPlFlhD49jPxXJtko+fa8Qbk1LSTEqiPFz9BaKi2hURJn9zuRFawIDAQAB"
+	keyIn := "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwIf+c/301BmIRMh076b+b8ToXVIYxXtL3Ozs3bRgp64mPoZaaLssUBRCdEWell5GER6buz5lUvmZIjV1VsGIuNOYQBPNgxJpOjBsS+5R4ve3F34JNSN0pqe1Ds8tUmZ1bzvaydCnqv/tCX56vTQzGmEEg5jm81VzwWUMymxVMjejmE2BM5BdGBVMeo4CN2JpRSTec//exNbPqXwjX8JBxgFFkNCD101wEidrLsAF4gPHIEu11zTvQwEtYa18WdA8C7MN1M4nic1RoAqdGJupbUDipTuyMYlDYrlPlFlhD49jPxXJtko+fa8Qbk1LSTEqiPFz9BaKi2hURJn9zuRFawIDAQAB"
 
-	bytes, _ := base64.StdEncoding.DecodeString(key)
+	bytes, _ := base64.StdEncoding.DecodeString(keyIn)
 	pubKey, err := x509.ParsePKIXPublicKey(bytes)
 	if err != nil {
-		licenseGlobal.loadstatus = -4
-		return
+		return -4, nil
 	}
 	pub := pubKey.(*rsa.PublicKey)
 	decrypted, _ := pubKeyDecrypt(pub, licenseKeyBytes)
@@ -129,16 +136,23 @@ func updateFromFile(licenseFile LicenseFile) {
 	err = json.Unmarshal(decrypted, &licenseContent)
 
 	if err != nil {
-		licenseGlobal.loadstatus = -5
 		fmt.Println("Unmarshal Failed", err.Error())
-		return
+		return -5, nil
 	}
-	licenseGlobal.loadstatus = 0
-	licenseGlobal.verbose = *licenseContent
+	return 0, licenseContent
+}
+
+func updateFromFile(licenseFile LicenseFile) {
+	licenseGlobal.verbose = LicenseContent{}
+	verifyRet, content := verifyKey(licenseFile.Key)
+	licenseGlobal.loadstatus = verifyRet
+	if nil != content {
+		licenseGlobal.verbose = *content
+	}
 }
 
 func LoadFile() {
-	data, err := ioutil.ReadFile("/var/lib/grafana/chenqi.lic")
+	data, err := ioutil.ReadFile(licenseFilePath)
 	if err != nil {
 		logger.Info("Read license file failed", "error", err)
 		licenseGlobal.loadstatus = -1

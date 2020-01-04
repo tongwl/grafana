@@ -37,9 +37,12 @@ func GetLicenseInfoVerbose(c *m.ReqContext) Response {
 func SetLicenseInfo(c *m.ReqContext, form dtos.LicenseInput) Response {
 	//  = form.Company
 	// licenseGlobal.key = form.Key
-	license.UpdateLicense(form.Key)
-
-	return JSON(200, util.DynMap{"status": "授权信息更新成功"})
+	retVal := license.UpdateLicense(form.Key)
+	if 0 == retVal {
+		return JSON(200, util.DynMap{"status": "授权信息更新成功"})
+	} else {
+		return JSON(400, util.DynMap{"status": "授权信息无效，更新失败"})
+	}
 }
 
 // POST /api/user/signup
