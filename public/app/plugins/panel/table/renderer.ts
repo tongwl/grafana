@@ -284,16 +284,16 @@ export class TableRenderer {
     }
 
     if (column.filterable) {
-      cellClasses.push('table-panel-cell-filterable');
-      columnHtml += `
-        <a class="table-panel-filter-link" data-link-tooltip data-original-title="Filter out value" data-placement="bottom"
-           data-row="${rowIndex}" data-column="${columnIndex}" data-operator="!=">
-          <i class="fa fa-search-minus"></i>
-        </a>
-        <a class="table-panel-filter-link" data-link-tooltip data-original-title="Filter for value" data-placement="bottom"
-           data-row="${rowIndex}" data-column="${columnIndex}" data-operator="=">
-          <i class="fa fa-search-plus"></i>
-        </a>`;
+      // cellClasses.push('table-panel-cell-filterable');
+      // columnHtml += `
+      //   <a class="table-panel-filter-link" data-link-tooltip data-original-title="Filter out value" data-placement="bottom"
+      //      data-row="${rowIndex}" data-column="${columnIndex}" data-operator="!=">
+      //     <i class="fa fa-search-minus"></i>
+      //   </a>
+      //   <a class="table-panel-filter-link" data-link-tooltip data-original-title="Filter for value" data-placement="bottom"
+      //      data-row="${rowIndex}" data-column="${columnIndex}" data-operator="=">
+      //     <i class="fa fa-search-plus"></i>
+      //   </a>`;
     }
 
     if (cellClasses.length) {

@@ -120,7 +120,8 @@ export default class PageHeader extends React.Component<Props, any> {
       <div className="page-header__inner">
         <span className="page-header__logo">
           {main.icon && <i className={`page-header__icon ${main.icon}`} />}
-          {main.img && <img className="page-header__img" src={main.img} />}
+          {main.id !== 'profile' && main.img && <img className="page-header__img" src={main.img} />}
+          {main.id === 'profile' && <i className={`page-header__icon gicon gicon-user`} />}
         </span>
 
         <div className="page-header__info-block">

@@ -19,6 +19,11 @@ import { updateLocation } from 'app/core/actions';
 import { DashboardModel } from '../../state';
 import { StoreState } from 'app/types';
 
+//Save as pdf
+const html2canvas = require('html2canvas');
+//const jsPDF = require('jsPDF');
+import { saveAs } from 'file-saver';
+
 export interface OwnProps {
   dashboard: DashboardModel;
   editview: string;
@@ -79,6 +84,72 @@ export class DashNav extends PureComponent<Props, State> {
       this.timepickerCmp.destroy();
     }
   }
+
+  onSaveAsPDF = () => {
+    const { dashboard } = this.props;
+    const pageContainer = $('.scroll-canvas--dashboard .dashboard-container .dashboard-container-inner');
+    const outerWidth = pageContainer.outerWidth();
+    const outerHeight = pageContainer.outerHeight();
+    let pdfTitle = dashboard.title;
+    if (pdfTitle === '' || pdfTitle === null || pdfTitle === undefined) {
+      pdfTitle = Math.floor(Math.random() * 100000000000).toString();
+    }
+
+    html2canvas(pageContainer[0], {
+      width: outerWidth,
+      height: outerHeight,
+      onclone: clone => {
+        $(clone)
+          .find('.scroll-canvas--dashboard .dashboard-container .dashboard-container-inner')
+          .css('background-color', '#161719');
+      },
+    }).then(canvas => {
+      canvas.toBlob(blob => {
+        saveAs(blob, `${pdfTitle}.png`);
+      }, 'image/png');
+    });
+
+    /*const pageContainer = $('.scroll-canvas--dashboard .dashboard-container .dashboard-container-inner');
+    let pdfTitle = "test";
+    if (pdfTitle === '' || pdfTitle === null || pdfTitle === undefined) {
+      pdfTitle = Math.floor(Math.random() * 100000000000).toString();
+    }
+
+    html2canvas(pageContainer[0]).then(canvas => {
+      // 要输出的 PDF 每页的宽高尺寸，单位是 pt
+      const pageWidth = 592.28;  //841.89
+      const pageHeight =  841.89; //592.28
+      // 要打印内容，转换成 canvas 图片后的宽高尺寸
+      const contentWidth =  canvas.width * 3 / 4;
+      const contentHeight = canvas.height * 3 / 4;
+      // 将要打印内容的图片，等比例缩放至宽度等于输出时 PDF 每页的宽度，此时的图片宽
+      const imgWidth = pageWidth;
+      // 将要打印内容的图片，等比例缩放至宽度等于输出时 PDF 每页的宽度，此时的图片高
+      const imgHeight = pageWidth / contentWidth * contentHeight;
+      // 起始内容截取位置
+      let position = 0;
+      // 剩余未打印内容的高度
+      let leftHeight = imgHeight;
+      // 获取打印内容 canvas 图片元素
+      const pageData = canvas.toDataURL('image/jpeg', 1.0);
+      // 初始化 pdf 容器，三个参数分别是：纸张方向(填'',则是横向)、打印单位、纸张尺寸
+      const PDF = new jsPDF('', 'pt', 'a4');
+      // 循环截取打印内容并添加进容器
+      if (leftHeight < pageHeight) {
+        PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
+      } else {
+        while (leftHeight > 0) {
+          PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight);
+          leftHeight -= pageHeight;
+          position -= pageHeight;
+          if (leftHeight > 0) {
+            PDF.addPage();
+          }
+        }
+      }
+      PDF.save(`${pdfTitle}.pdf`);
+    });*/
+  };
 
   onDahboardNameClick = () => {
     appEvents.emit('show-dash-search');
@@ -241,6 +312,15 @@ export class DashNav extends PureComponent<Props, State> {
         )}
 
         <div className="navbar-buttons navbar-buttons--actions">
+          {showAll && (
+            <DashNavButton
+              tooltip="导出PDF"
+              classSuffix="save-to-pdf"
+              icon="fa fa-file-pdf-o"
+              onClick={this.onSaveAsPDF}
+            />
+          )}
+
           {canSave && showAll && (
             <DashNavButton
               tooltip="Add panel"

@@ -51,7 +51,7 @@ class Page extends Component<Props> {
         : title === 'Server Admin: Stats'
         ? '服务器管理员: 统计'
         : title;
-    document.title = title ? title + ' - 辰栖科技' : '辰栖科技';
+    document.title = title ? title + ' - ElasticStor 存储管理系统' : 'ElasticStor 存储管理系统';
   };
 
   get getPageTitle() {

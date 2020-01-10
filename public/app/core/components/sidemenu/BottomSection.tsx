@@ -8,10 +8,10 @@ import config from '../../config';
 
 export default class BottomSection extends Component {
   licenseRequest: any;
-  licenseAlertRequest: any;
   licenseTimer: any;
-  licenseAlertTimer: any;
+  showButtonsRequest: any;
   state = {
+    showAll: false,
     legalLicense: true,
     licenseMessage: '',
   };
@@ -45,15 +45,15 @@ export default class BottomSection extends Component {
           {
             icon: 'gicon gicon-apikeys',
             id: 'license-list',
-            text: 'license管理',
+            text: '授权管理',
             url: '/license/list',
           },
         ],
         hideFromMenu: true,
         icon: 'gicon gicon-apikeys',
         id: 'license',
-        subTitle: 'License',
-        text: 'License',
+        subTitle: '授权',
+        text: '授权',
         url: '/license/list',
         legalLicense: this.state.legalLicense,
         licenseMessage: this.state.licenseMessage,
@@ -76,6 +76,11 @@ export default class BottomSection extends Component {
       }
       return false;
     });
+    if (!this.state.showAll) {
+      _.remove(bottomNav, (link: any) => {
+        return link.id === 'help';
+      });
+    }
 
     //translate
     _.forEach(bottomNav, link => {
@@ -217,40 +222,18 @@ export default class BottomSection extends Component {
   }
 
   getLicense() {
-    this.licenseRequest = $.ajax({
-      type: 'GET',
-      dataType: 'json',
-      url: '/license/information',
-      success: (result: any) => {
-        if (result) {
-          this.setState({
-            legalLicense: result['授权状态'] === '授权信息正常',
-            licenseMessage: result['授权状态'],
-          });
-        } else {
-          this.setState({
-            legalLicense: false,
-            licenseMessage: '加载授权信息失败',
-          });
-        }
-      },
-      error: () => {
-        this.setState({
-          legalLicense: false,
-          licenseMessage: '加载授权信息失败',
-        });
-      },
-    });
-  }
-
-  setLicenseAlert() {
     if ($('sidemenu.sidemenu').length > 0 && $('sidemenu.sidemenu').is(':visible')) {
-      this.licenseAlertRequest = $.ajax({
+      this.licenseRequest = $.ajax({
         type: 'GET',
         dataType: 'json',
         url: '/license/information',
         success: (license: any) => {
           if (license) {
+            this.setState({
+              legalLicense: license['授权状态'] === '授权信息正常',
+              licenseMessage: license['授权状态'],
+            });
+
             if (license['授权状态'] !== '授权信息正常') {
               let message = '';
               switch (license['授权状态']) {
@@ -273,36 +256,58 @@ export default class BottomSection extends Component {
                 //   message = `很抱歉，${license['授权状态']}，请检查！`;
                 //   break;
               }
-              if (message !== '' && window.location.href.indexOf('/license') < 0) {
+              if (
+                message !== '' &&
+                window.location.href.indexOf('/license') < 0 &&
+                window.location.href.indexOf('/profile') < 0
+              ) {
                 //windowAlert(message);
                 window.location.href = 'license/list';
               }
             }
+          } else {
+            this.setState({
+              legalLicense: false,
+              licenseMessage: '加载授权信息失败',
+            });
           }
+        },
+        error: () => {
+          this.setState({
+            legalLicense: false,
+            licenseMessage: '加载授权信息失败',
+          });
         },
       });
     }
   }
 
+  showButtons() {
+    this.showButtonsRequest = $.ajax({
+      type: 'GET',
+      dataType: 'json',
+      url: 'public/setting.json?v=' + Math.random(),
+      success: (result: any) => {
+        this.setState({
+          showAll: result.showAll,
+        });
+      },
+    });
+  }
+
   componentDidMount() {
+    this.showButtons();
     window.setTimeout(() => {
       this.getLicense();
-    }, 2000);
+    }, 3000);
     this.licenseTimer = window.setInterval(() => {
       this.getLicense();
-    }, 10000);
-    window.setTimeout(() => {
-      this.setLicenseAlert();
-    }, 10000);
-    this.licenseAlertTimer = window.setInterval(() => {
-      this.setLicenseAlert();
-    }, 600000);
+    }, 5000);
   }
 
   componentWillUnmount() {
     clearInterval(this.licenseTimer);
-    clearInterval(this.licenseAlertTimer);
     this.licenseRequest.abort();
-    this.licenseAlertRequest.abort();
+    this.showButtonsRequest.abort();
   }
 }

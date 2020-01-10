@@ -109,7 +109,7 @@ export class DashboardPage extends PureComponent<Props, State> {
     if (!prevProps.dashboard) {
       dashboard.title =
         dashboard.title === 'New dashboard' ? '创建面板' : dashboard.title === 'Home' ? '主页' : dashboard.title;
-      document.title = dashboard.title ? dashboard.title + ' - 辰栖科技' : '辰栖科技';
+      document.title = dashboard.title ? dashboard.title + ' - ElasticStor 存储管理系统' : 'ElasticStor 存储管理系统';
     }
 
     // Due to the angular -> react url bridge we can ge an update here with new uid before the container unmounts
@@ -300,13 +300,15 @@ export class DashboardPage extends PureComponent<Props, State> {
             {initError && this.renderInitFailedState()}
 
             <div className={gridWrapperClasses}>
-              {dashboard.meta.submenuEnabled && <SubMenu dashboard={dashboard} />}
-              <DashboardGrid
-                dashboard={dashboard}
-                isEditing={isEditing}
-                isFullscreen={isFullscreen}
-                scrollTop={approximateScrollTop}
-              />
+              <div className="dashboard-container-inner">
+                {dashboard.meta.submenuEnabled && <SubMenu dashboard={dashboard} />}
+                <DashboardGrid
+                  dashboard={dashboard}
+                  isEditing={isEditing}
+                  isFullscreen={isFullscreen}
+                  scrollTop={approximateScrollTop}
+                />
+              </div>
             </div>
           </CustomScrollbar>
         </div>

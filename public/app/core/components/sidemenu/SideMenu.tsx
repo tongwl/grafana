@@ -13,8 +13,8 @@ export class SideMenu extends PureComponent {
 
   render() {
     return [
-      <a href={homeUrl} className="sidemenu__logo" key="logo" title="辰栖科技">
-        <img src="public/img/cx/cx_logo.svg" alt="辰栖科技" />
+      <a href={homeUrl} className="sidemenu__logo" key="logo" title="ElasticStor 存储管理系统">
+        <img src="public/img/cx/cx_logo.svg" alt="ElasticStor 存储管理系统" />
       </a>,
       <div className="sidemenu__logo_small_breakpoint" onClick={this.toggleSideMenuSmallBreakpoint} key="hamburger">
         <i className="fa fa-bars" />

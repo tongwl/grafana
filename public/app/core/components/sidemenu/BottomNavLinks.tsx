@@ -37,7 +37,8 @@ class BottomNavLinks extends PureComponent<Props> {
         >
           <span className="icon-circle sidemenu-icon">
             {link.icon && <i className={link.icon} />}
-            {link.img && <img src={link.img} />}
+            {link.id !== 'profile' && link.img && <img src={link.img} />}
+            {link.id === 'profile' && <i className="gicon gicon-user" />}
           </span>
         </a>
         {link.id === 'license' && !link.legalLicense && <i className="fa fa-exclamation-circle" />}

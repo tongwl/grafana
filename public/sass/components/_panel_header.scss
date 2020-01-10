@@ -37,6 +37,7 @@ $panel-header-no-title-zindex: 1;
       right: 9px;
       cursor: pointer;
       z-index: 1;
+      display: none;
 
       &:hover {
         i {

@@ -301,7 +301,17 @@ class LegendTableHeaderItem extends PureComponent<LegendTableHeaderProps & Legen
     const { statName, sort, sortDesc } = this.props;
     return (
       <th className="pointer" onClick={this.onClick}>
-        {statName}
+        {statName === 'min'
+          ? '最低'
+          : statName === 'max'
+          ? '最高'
+          : statName === 'avg'
+          ? '平均'
+          : statName === 'current'
+          ? '实时'
+          : statName === 'total'
+          ? '总计'
+          : statName}
         {sort === statName && <span className={sortDesc ? 'fa fa-caret-down' : 'fa fa-caret-up'} />}
       </th>
     );

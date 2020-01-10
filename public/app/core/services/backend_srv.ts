@@ -246,8 +246,38 @@ export class BackendSrv {
     return this.request({ url: '/api/login/ping', method: 'GET', retry: 1 });
   }
 
+  sortSearch(result: any, title: string): void {
+    let exist = false;
+    let index = 0;
+    let obj: any;
+    _.some(
+      result,
+      (dash, idx: number): boolean => {
+        if (dash.title === title) {
+          exist = true;
+          index = idx;
+          obj = dash;
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    if (exist) {
+      result.splice(index, 1);
+      result.unshift(obj);
+    }
+  }
+
   search(query: any): Promise<DashboardSearchHit[]> {
-    return this.get('/api/search', query);
+    return this.get('/api/search', query).then(result => {
+      if (result && result.length > 0) {
+        this.sortSearch(result, '存储卷信息');
+        this.sortSearch(result, '存储节点信息');
+        this.sortSearch(result, '概览');
+      }
+      return result;
+    });
   }
 
   getDashboardBySlug(slug: string) {
