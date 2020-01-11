@@ -312,14 +312,14 @@ export class DashNav extends PureComponent<Props, State> {
         )}
 
         <div className="navbar-buttons navbar-buttons--actions">
-          {showAll && (
+          {
             <DashNavButton
-              tooltip="导出PDF"
+              tooltip="导出图片"
               classSuffix="save-to-pdf"
-              icon="fa fa-file-pdf-o"
+              icon="fa fa-file-image-o"
               onClick={this.onSaveAsPDF}
             />
-          )}
+          }
 
           {canSave && showAll && (
             <DashNavButton
