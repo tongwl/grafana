@@ -37,6 +37,10 @@ export class DashNavTimeControls extends Component<Props> {
     return Promise.resolve();
   };
 
+  componentDidMount() {
+    this.onChangeRefreshInterval('5s');
+  }
+
   render() {
     const { dashboard } = this.props;
     const intervals = dashboard.timepicker.refresh_intervals;

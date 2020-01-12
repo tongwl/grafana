@@ -24,9 +24,10 @@ export class TimePickerCtrl {
   firstDayOfWeek: number;
   isOpen: boolean;
   isAbsolute: boolean;
+  showAll: boolean;
 
   /** @ngInject */
-  constructor(private $scope, private $rootScope, private timeSrv) {
+  constructor(private $scope, private $rootScope, private backendSrv, private timeSrv) {
     this.$scope.ctrl = this;
 
     $rootScope.onAppEvent('shift-time-forward', () => this.move(1), $scope);
@@ -68,6 +69,9 @@ export class TimePickerCtrl {
     this.tooltip += this.dashboard.formatDate(time.to);
     this.timeRaw = timeRaw;
     this.isAbsolute = moment.isMoment(this.timeRaw.to);
+    this.backendSrv.get('public/setting.json?v=' + Math.random()).then((result: any) => {
+      this.showAll = result.showAll;
+    });
   }
 
   zoom(factor) {

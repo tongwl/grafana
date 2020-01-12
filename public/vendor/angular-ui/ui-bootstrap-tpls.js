@@ -364,10 +364,10 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
 .constant('datepickerConfig', {
   formatDay: 'dd',
-  formatMonth: 'MMMM',
+  formatMonth: 'MM',
   formatYear: 'yyyy',
-  formatDayHeader: 'EEE',
-  formatDayTitle: 'MMMM yyyy',
+  formatDayHeader: 'MM月',
+  formatDayTitle: 'MM月 yyyy',
   formatMonthTitle: 'yyyy',
   datepickerMode: 'day',
   minMode: 'day',
