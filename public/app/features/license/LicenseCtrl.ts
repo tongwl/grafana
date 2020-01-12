@@ -4,6 +4,10 @@ import moment from 'moment';
 export default class LicenseCtrl {
   navModel: any;
   isLoading = true;
+  timeWarning: any = {
+    status: false,
+    message: null,
+  };
   isLegalLicenseInfo: any = {
     showAlert: false,
     alertMessage: null,
@@ -101,15 +105,24 @@ export default class LicenseCtrl {
             const days =
               license['授权天数'] - moment(license['系统时间'] * 1000).diff(moment(license['激活时间'] * 1000), 'day');
             if (days <= 45) {
-              this.isLegalLicenseInfo.showAlert = true;
-              this.isLegalLicenseInfo.alertMessage = `亲爱的用户，您的授权码将于${days}天后(
+              this.timeWarning.status = true;
+              this.timeWarning.message = `亲爱的用户，您的授权码将于${days}天后(
                 ${moment(license['激活时间'] * 1000)
                   .add(license['授权天数'], 'day')
                   .format('YYYY-MM-DD')}
                  )到期，请及时续费。`;
+            } else {
+              this.timeWarning = {
+                status: false,
+                message: null,
+              };
             }
           }
         } else {
+          this.timeWarning = {
+            status: false,
+            message: null,
+          };
           this.initIsLegalLicenseInfo();
           this.isLegalLicenseInfo.showAlert = true;
           this.isLegalLicenseInfo.alertMessage = '很抱歉，加载授权信息失败，请联系管理员！';
@@ -117,6 +130,10 @@ export default class LicenseCtrl {
         }
       },
       () => {
+        this.timeWarning = {
+          status: false,
+          message: null,
+        };
         this.initIsLegalLicenseInfo();
         this.isLegalLicenseInfo.showAlert = true;
         this.isLegalLicenseInfo.alertMessage = '很抱歉，加载授权信息失败，请联系管理员！';

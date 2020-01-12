@@ -4,6 +4,9 @@
   <div class="alert-container" ng-if="ctrl.isLegalLicenseInfo.showAlert">
     <i class="fa fa-exclamation-circle"></i>{{ctrl.isLegalLicenseInfo.alertMessage}}
   </div>
+  <div class="alert-container" ng-if="ctrl.timeWarning.status">
+    <i class="fa fa-exclamation-circle"></i>{{ctrl.timeWarning.message}}
+  </div>
 
   <form name="licenseForm" class="gf-form-group license-form" ng-if="!ctrl.isLoading && !ctrl.isLegalLicenseInfo.loadLicenseFail && !ctrl.isLegalLicenseInfo.parseLicenseFail && !ctrl.isLegalLicenseInfo.serverAPIError">
     <div class="gf-form">
