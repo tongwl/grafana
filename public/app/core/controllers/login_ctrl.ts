@@ -126,15 +126,26 @@ export class LoginCtrl {
     };
 
     $scope.toGrafana = () => {
-      const params = $location.search();
+      backendSrv.get('/license/information').then(
+        (result: any) => {
+          if (result['授权状态'] === '授权信息正常') {
+            const params = $location.search();
 
-      if (params.redirect && params.redirect[0] === '/') {
-        window.location.href = config.appSubUrl + params.redirect;
-      } else if ($scope.result.redirectUrl) {
-        window.location.href = $scope.result.redirectUrl;
-      } else {
-        window.location.href = config.appSubUrl + '/';
-      }
+            if (params.redirect && params.redirect[0] === '/') {
+              window.location.href = config.appSubUrl + params.redirect;
+            } else if ($scope.result.redirectUrl) {
+              window.location.href = $scope.result.redirectUrl;
+            } else {
+              window.location.href = config.appSubUrl + '/';
+            }
+          } else {
+            window.location.href = 'license/list';
+          }
+        },
+        () => {
+          window.location.href = 'license/list';
+        }
+      );
     };
 
     $scope.init();
