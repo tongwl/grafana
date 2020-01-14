@@ -182,7 +182,12 @@ export class TableRenderer {
         }
 
         this.setColorState(v, column.style);
-        return valueFormatter(v, column.style.decimals, null);
+        let value = valueFormatter(v, column.style.decimals, null);
+        value = value.replace(/TiB/gi, 'TB');
+        value = value.replace(/GiB/gi, 'GB');
+        value = value.replace(/KiB/gi, 'KB');
+        value = value.replace(/MiB/gi, 'MB');
+        return value;
       };
     }
 

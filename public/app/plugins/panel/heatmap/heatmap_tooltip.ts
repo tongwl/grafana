@@ -271,7 +271,12 @@ export class HeatmapTooltip {
   countValueFormatter(decimals, scaledDecimals = null) {
     const format = 'short';
     return value => {
-      return getValueFormat(format)(value, decimals, scaledDecimals);
+      let val = getValueFormat(format)(value, decimals, scaledDecimals);
+      val = val.replace(/TiB/gi, 'TB');
+      val = val.replace(/GiB/gi, 'GB');
+      val = val.replace(/KiB/gi, 'KB');
+      val = val.replace(/MiB/gi, 'MB');
+      return val;
     };
   }
 }

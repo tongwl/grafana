@@ -196,11 +196,12 @@ class SingleStatCtrl extends MetricsPanelCtrl {
       const decimalInfo = getDecimalsForValue(data.value, this.panel.decimals);
       const formatFunc = getValueFormat(this.panel.format);
 
-      data.valueFormatted = formatFunc(
-        datapoint[this.panel.tableColumn],
-        decimalInfo.decimals,
-        decimalInfo.scaledDecimals
-      );
+      let value = formatFunc(datapoint[this.panel.tableColumn], decimalInfo.decimals, decimalInfo.scaledDecimals);
+      value = value.replace(/TiB/gi, 'TB');
+      value = value.replace(/GiB/gi, 'GB');
+      value = value.replace(/KiB/gi, 'KB');
+      value = value.replace(/MiB/gi, 'MB');
+      data.valueFormatted = value;
       data.valueRounded = kbn.roundValue(data.value, decimalInfo.decimals);
     }
 
@@ -276,19 +277,29 @@ class SingleStatCtrl extends MetricsPanelCtrl {
       } else if (this.panel.valueName === 'last_time') {
         data.value = lastPoint[1];
         data.valueRounded = data.value;
-        data.valueFormatted = formatFunc(data.value, 0, 0, this.dashboard.isTimezoneUtc());
+        let value = formatFunc(data.value, 0, 0, this.dashboard.isTimezoneUtc());
+        value = value.replace(/TiB/gi, 'TB');
+        value = value.replace(/GiB/gi, 'GB');
+        value = value.replace(/KiB/gi, 'KB');
+        value = value.replace(/MiB/gi, 'MB');
+        data.valueFormatted = value;
       } else {
         data.value = this.series[0].stats[this.panel.valueName];
         data.flotpairs = this.series[0].flotpairs;
 
         const decimalInfo = getDecimalsForValue(data.value, this.panel.decimals);
 
-        data.valueFormatted = formatFunc(
+        let value = formatFunc(
           data.value,
           decimalInfo.decimals,
           decimalInfo.scaledDecimals,
           this.dashboard.isTimezoneUtc()
         );
+        value = value.replace(/TiB/gi, 'TB');
+        value = value.replace(/GiB/gi, 'GB');
+        value = value.replace(/KiB/gi, 'KB');
+        value = value.replace(/MiB/gi, 'MB');
+        data.valueFormatted = value;
         data.valueRounded = kbn.roundValue(data.value, decimalInfo.decimals);
       }
 
@@ -596,7 +607,6 @@ class SingleStatCtrl extends MetricsPanelCtrl {
 
       if (panel.colorBackground) {
         const color = getColorForValue(data, data.value);
-        console.log(color);
         if (color) {
           $panelContainer.css('background-color', color);
           if (scope.fullscreen) {

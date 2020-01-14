@@ -743,7 +743,12 @@ class GraphElement {
       if (!formatter) {
         throw new Error(`Unit '${format}' is not supported`);
       }
-      return formatter(val, axis.tickDecimals, axis.scaledDecimals);
+      let value = formatter(val, axis.tickDecimals, axis.scaledDecimals);
+      value = value.replace(/TiB/gi, 'TB');
+      value = value.replace(/GiB/gi, 'GB');
+      value = value.replace(/KiB/gi, 'KB');
+      value = value.replace(/MiB/gi, 'MB');
+      return value;
     };
   }
 

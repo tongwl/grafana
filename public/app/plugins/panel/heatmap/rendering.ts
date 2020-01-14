@@ -441,7 +441,16 @@ export class HeatmapRenderer {
     const format = this.panel.yAxis.format;
     return value => {
       try {
-        return format !== 'none' ? getValueFormat(format)(value, decimals, scaledDecimals) : value;
+        if (format !== 'none') {
+          let val = getValueFormat(format)(value, decimals, scaledDecimals);
+          val = val.replace(/TiB/gi, 'TB');
+          val = val.replace(/GiB/gi, 'GB');
+          val = val.replace(/KiB/gi, 'KB');
+          val = val.replace(/MiB/gi, 'MB');
+          return val;
+        } else {
+          return value;
+        }
       } catch (err) {
         console.error(err.message || err);
         return value;
