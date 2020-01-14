@@ -51,7 +51,7 @@ export class RefreshPicker extends PureComponent<Props> {
   render() {
     const { onRefresh, intervals, tooltip, value } = this.props;
     const options = this.intervalsToOptions(this.hasNoIntervals() ? defaultIntervals : intervals);
-    const currentValue = value || '5s';
+    const currentValue = value || '';
     const selectedValue = options.find(item => item.value === currentValue) || offOption;
 
     const cssClasses = classNames({
