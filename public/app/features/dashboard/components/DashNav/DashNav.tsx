@@ -87,9 +87,9 @@ export class DashNav extends PureComponent<Props, State> {
 
   onSaveAsPDF = () => {
     const { dashboard } = this.props;
-    const pageContainer = $('.scroll-canvas--dashboard .dashboard-container .dashboard-container-inner');
+    const pageContainer = $('.scroll-canvas--dashboard .dashboard-container');
     const outerWidth = pageContainer.outerWidth();
-    const outerHeight = pageContainer.outerHeight();
+    const outerHeight = pageContainer[0].scrollHeight;
     let pdfTitle = dashboard.title;
     if (pdfTitle === '' || pdfTitle === null || pdfTitle === undefined) {
       pdfTitle = Math.floor(Math.random() * 100000000000).toString();
@@ -100,8 +100,9 @@ export class DashNav extends PureComponent<Props, State> {
       height: outerHeight,
       onclone: clone => {
         $(clone)
-          .find('.scroll-canvas--dashboard .dashboard-container .dashboard-container-inner')
-          .css('background-color', '#161719');
+          .find('.scroll-canvas--dashboard .dashboard-container')
+          .css('background-color', '#161719')
+          .css('height', outerHeight + 'px');
       },
     }).then(canvas => {
       canvas.toBlob(blob => {
@@ -109,7 +110,7 @@ export class DashNav extends PureComponent<Props, State> {
       }, 'image/png');
     });
 
-    /*const pageContainer = $('.scroll-canvas--dashboard .dashboard-container .dashboard-container-inner');
+    /*const pageContainer = $('.scroll-canvas--dashboard .dashboard-container');
     let pdfTitle = "test";
     if (pdfTitle === '' || pdfTitle === null || pdfTitle === undefined) {
       pdfTitle = Math.floor(Math.random() * 100000000000).toString();

@@ -300,15 +300,13 @@ export class DashboardPage extends PureComponent<Props, State> {
             {initError && this.renderInitFailedState()}
 
             <div className={gridWrapperClasses}>
-              <div className="dashboard-container-inner">
-                {dashboard.meta.submenuEnabled && <SubMenu dashboard={dashboard} />}
-                <DashboardGrid
-                  dashboard={dashboard}
-                  isEditing={isEditing}
-                  isFullscreen={isFullscreen}
-                  scrollTop={approximateScrollTop}
-                />
-              </div>
+              {dashboard.meta.submenuEnabled && <SubMenu dashboard={dashboard} />}
+              <DashboardGrid
+                dashboard={dashboard}
+                isEditing={isEditing}
+                isFullscreen={isFullscreen}
+                scrollTop={approximateScrollTop}
+              />
             </div>
           </CustomScrollbar>
         </div>
