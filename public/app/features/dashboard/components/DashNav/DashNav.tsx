@@ -373,12 +373,7 @@ export class DashNav extends PureComponent<Props, State> {
         </div>
 
         <div className="navbar-buttons navbar-buttons--tv">
-          <DashNavButton
-            tooltip="Cycle view mode"
-            classSuffix="tv"
-            icon="fa fa-desktop"
-            onClick={this.onToggleTVMode}
-          />
+          <DashNavButton tooltip="全屏模式" classSuffix="tv" icon="fa fa-desktop" onClick={this.onToggleTVMode} />
         </div>
 
         {!dashboard.timepicker.hidden && (
