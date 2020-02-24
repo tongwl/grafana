@@ -170,7 +170,7 @@ export function grafanaAppDirective(playlistSrv, contextSrv, $timeout, $rootScop
         switch (search.kiosk) {
           case 'tv': {
             search.kiosk = true;
-            appEvents.emit('alert-success', ['Press ESC to exit Kiosk mode']);
+            appEvents.emit('alert-success', ['按ESC退出全屏模式']);
             break;
           }
           case '1':
