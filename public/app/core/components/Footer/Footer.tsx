@@ -15,7 +15,7 @@ export const Footer: FC<Props> = React.memo(
       <footer className="footer">
         <div className="text-center">
           <span>
-            Copyright &copy; {new Date().getFullYear()}-{new Date().getFullYear() + 1} 杭州辰栖科技有限公司 保留所有权利
+            Copyright &copy; {new Date().getFullYear() - 1}-{new Date().getFullYear()} 杭州辰栖科技有限公司 保留所有权利
           </span>
           <ul className="display-none">
             <li>
