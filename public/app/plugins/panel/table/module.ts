@@ -195,6 +195,19 @@ class TablePanelCtrl extends MetricsPanelCtrl {
     }
 
     function appendTableRows(tbodyElem) {
+      let index = -1;
+      _.some(data.columns, (item: any, idx: number) => {
+        if (item.text === 'scaleio_sds_name' || item.text === 'volume_name' || item.text === 'sdc_name') {
+          index = idx;
+          return true;
+        } else {
+          return false;
+        }
+      });
+      if (index > -1 && data.rows && data.rows.length > 0) {
+        data.rows.sort();
+      }
+
       ctrl.renderer.setTable(data);
       tbodyElem.empty();
       tbodyElem.html(ctrl.renderer.render(ctrl.pageIndex));
