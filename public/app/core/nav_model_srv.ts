@@ -160,7 +160,7 @@ export class NavModelSrv {
           break;
         case 'help':
           link.text = '帮助'; //Help
-          link.subTitle = '辰栖科技';
+          link.subTitle = '';
           _.forEach(link.children, child => {
             switch (child.text) {
               case 'Keyboard shortcuts':

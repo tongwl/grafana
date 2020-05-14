@@ -94,7 +94,7 @@ export default class LicenseCtrl {
             installedID: license['安装ID'],
             actualID: license['实际安装ID'],
             actualScale: license['实际规模'],
-            licenseDays: license['授权天数'],
+            licenseDays: license['授权天数'] > 36500 ? '永久' : license['授权天数'],
             licenseKey: license['授权码'],
             activeTime: moment(license['激活时间'] * 1000).format('YYYY-MM-DD HH:mm:ss'),
             systemTime: moment(license['系统时间'] * 1000).format('YYYY-MM-DD HH:mm:ss'),

@@ -14,9 +14,7 @@ export const Footer: FC<Props> = React.memo(
     return (
       <footer className="footer">
         <div className="text-center">
-          <span>
-            Copyright &copy; {new Date().getFullYear() - 1}-{new Date().getFullYear()} 杭州辰栖科技有限公司 保留所有权利
-          </span>
+          <span />
           <ul className="display-none">
             <li>
               <a href="http://docs.grafana.org" target="_blank">
