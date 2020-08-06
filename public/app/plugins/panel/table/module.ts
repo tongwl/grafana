@@ -136,7 +136,6 @@ class TablePanelCtrl extends MetricsPanelCtrl {
   render() {
     this.table = transformDataToTable(this.dataRaw, this.panel);
     this.table.sort(this.panel.sort);
-
     this.renderer = new TableRenderer(
       this.panel,
       this.table,
@@ -197,7 +196,12 @@ class TablePanelCtrl extends MetricsPanelCtrl {
     function appendTableRows(tbodyElem) {
       let index = -1;
       _.some(data.columns, (item: any, idx: number) => {
-        if (item.text === 'scaleio_sds_name' || item.text === 'volume_name' || item.text === 'sdc_name') {
+        if (
+          item.text === 'scaleio_sds_name' ||
+          item.text === 'volume_name' ||
+          item.text === 'sdc_name' ||
+          item.text === 'sdc_ip'
+        ) {
           index = idx;
           return true;
         } else {
