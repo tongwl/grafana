@@ -201,7 +201,8 @@ class TablePanelCtrl extends MetricsPanelCtrl {
           item.text === 'scaleio_sds_name' ||
           item.text === 'volume_name' ||
           item.text === 'sdc_name' ||
-          item.text === 'sdc_ip'
+          item.text === 'sdc_ip' ||
+          item.text === 'sdc_nodeip'
         ) {
           index = idx;
           return true;
